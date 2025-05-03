@@ -1,29 +1,19 @@
-// middleware/authMiddleware.js
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
+const User = require('../Models/userModel');
 
-function verifyToken(req, res, next) {
-  const header = req.headers["authorization"];
-  if (!header) return res.status(401).json({ msg: "Token gerekli" });
-  const token = header.split(" ")[1];
-  if (!token) return res.status(401).json({ msg: "Token bulunamadı" });
-
+exports.protect = async (req, res, next) => {
+  let token;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+  if (!token) {
+    return res.status(401).json({ message: 'Not authorized, no token' });
+  }
   try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await User.findById(decoded.id).select('-password');
     next();
-  } catch {
-    res.status(403).json({ msg: "Geçersiz token" });
+  } catch (err) {
+    res.status(401).json({ message: 'Not authorized, token failed' });
   }
-}
-
-function isAdmin(req, res, next) {
-  if (!req.user || req.user.role !== "admin") {
-    return res.status(403).json({ msg: "Yetkisiz erişim" });
-  }
-  next();
-}
-
-// Burada alias veriyoruz: router’da protect diye kullanacağız
-module.exports = {
-  protect: verifyToken,
-  isAdmin,
 };

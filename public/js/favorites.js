@@ -18,3 +18,23 @@ async function loadFavorites() {
   });
 }
 document.addEventListener('DOMContentLoaded',loadFavorites);
+function loadFavorites() {
+  const token = localStorage.getItem('token');
+  if (!token) return window.location.href = '/login.html';
+  fetch('/api/favorites', {
+    headers: { 'Authorization': 'Bearer ' + token }
+  })
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById('favorites-items');
+    if (!container) return;
+    container.innerHTML = '';
+    data.items.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'product-card';
+      div.innerHTML = `<img src="${item.product.imageUrl}" alt="${item.product.name}" class="product-image"><span>${item.product.name}</span>`;
+      container.appendChild(div);
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded', loadFavorites);

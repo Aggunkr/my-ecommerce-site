@@ -30,3 +30,36 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(e.target.matches('.remove-btn')) removeFromCart(e.target.dataset.id);
   });
 });
+// Add to cart functionality
+function addToCart(productId) {
+  fetch('/api/cart', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({productId})
+  })
+  .then(res => res.json())
+  .then(data => alert('Ürün sepete eklendi!'))
+  .catch(err => console.error(err));
+}
+
+function loadCart() {
+  const token = localStorage.getItem('token');
+  if (!token) return window.location.href = '/login.html';
+  fetch('/api/cart', {
+    headers: { 'Authorization': 'Bearer ' + token }
+  })
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById('cart-items');
+    if (!container) return;
+    container.innerHTML = '';
+    data.items.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `<span>${item.product.name}</span><span>Adet: ${item.quantity}</span>`;
+      container.appendChild(div);
+    });
+    document.getElementById('cart-count').textContent = data.items.length;
+  });
+}
+document.addEventListener('DOMContentLoaded', loadCart);

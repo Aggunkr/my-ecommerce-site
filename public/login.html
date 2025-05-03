@@ -1,12 +1,21 @@
 <!DOCTYPE html>
+
 <html lang="tr">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Giriş Yap</title>
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<head>
+  <link rel="stylesheet" href="css/styles.css" /><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><title>Giriş Yap</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
 </head><body class="bg-gray-50 text-gray-800">
 <div class="auth-form max-w-md mx-auto mt-20 p-6 bg-white rounded-lg shadow">
-  <h2 class="text-2xl mb-4">Giriş Yap</h2>
-  <input id="email" type="email" placeholder="E-posta" class="w-full border rounded p-2 mb-3">
-  <input id="password" type="password" placeholder="Şifre" class="w-full border rounded p-2 mb-4">
-  <button id="login-btn" class="btn-primary bg-blue-600 text-white w-full">Giriş Yap</button>
-  <p class="mt-4 text-center">Hesabınız yok mu? <a href="register.html" class="text-blue-600">Kayıt Ol</a></p>
-</div><script src="js/auth.js"></script></body></html>
+<h2 class="text-2xl mb-4">Giriş Yap</h2>
+<input class="w-full border rounded p-2 mb-3" id="email" placeholder="E-posta" type="email"/>
+<input class="w-full border rounded p-2 mb-4" id="password" placeholder="Şifre" type="password"/>
+<button class="btn-primary bg-blue-600 text-white w-full" id="login-btn">Giriş Yap</button>
+<p class="mt-4 text-center">Hesabınız yok mu? <a class="text-blue-600" href="register.html">Kayıt Ol</a></p>
+</div><script src="js/auth.js"></script>
+  <script>
+    document.getElementById('corporate-login-btn').addEventListener('click', () => {
+      window.location.href = '/admin/login.html';
+    });
+  </script>
+<script>document.getElementById('corporate-login-btn').addEventListener('click',()=>window.location.href='/admin/login.html');</script>
+</body></html>
